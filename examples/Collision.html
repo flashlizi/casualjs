@@ -1,0 +1,188 @@
+<html>
+
+<head>
+<meta name="Author" content="flashlizi - www.riaidea.com">
+<meta name="Keywords" content="HTML5,canvas,casual framework">
+<meta name="Description" content="HTML5 canvas experiment">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Object Collision - CasualJS Framework</title>
+
+<link type="text/css" href="css/style.css" media="screen" rel="stylesheet" />
+<script type="text/javascript" src="../js/casual-0.1.min.js"></script>
+
+<script type="text/javascript">
+var canvas, context, stage;
+var logo, img_pig, img_bird1, img_bird2, img_bird2;
+var pig, bird1, bird2, bird3;
+
+function init()
+{
+	//init canvas
+	canvas = document.getElementById("canvas");
+	context = canvas.getContext("2d");
+
+	//images
+	logo = document.getElementById("logo");
+	img_pig = document.getElementById("pig");
+	img_bird1 = document.getElementById("bird1");
+	img_bird2 = document.getElementById("bird2");
+	img_bird3 = document.getElementById("bird3");
+
+	start();
+}
+
+function start()
+{	
+	//create stage
+	stage = new Stage(context);
+	stage.setFrameRate(10);	
+
+	bird1 = new Bitmap(img_bird1);
+	bird1.x = 80;
+	bird1.y = 50;
+	stage.addChild(bird1);
+
+	var bound = bird1.getRect(stage);
+	var rect = new Shape();
+	rect.alpha = 0.3;
+	rect.graphics.lineStyle(1, "#fff").drawRect(bound.x+0.5, bound.y+0.5, bound.width, bound.height);
+	stage.addChild(rect);
+
+	bird2 = new Bitmap(img_bird2);
+	bird2.x = 300;
+	bird2.y = 80;
+	stage.addChild(bird2);
+
+	bound = bird2.getRect(stage);
+	rect = new Shape();
+	rect.alpha = 0.3;
+	rect.graphics.lineStyle(1, "#fff").drawRect(bound.x+0.5, bound.y+0.5, bound.width, bound.height);
+	stage.addChild(rect);	
+
+	bird3 = new Bitmap(img_bird3);
+	bird3.x = 500;
+	bird3.y = 70;
+	stage.addChild(bird3);
+
+	bound = bird3.getRect(stage);
+	rect = new Shape();
+	rect.alpha = 0.3;
+	rect.graphics.lineStyle(1, "#fff").drawRect(bound.x+0.5, bound.y+0.5, bound.width, bound.height);
+	stage.addChild(rect);
+	
+	//mouse event label
+	label = new Text();
+	label.x = 160;
+	label.y = 400;
+	label.color = "#fff";
+	label.font = "18px Arial";
+	label.align = "start";
+	label.text = "Please try to drag the pig over the birds on top";
+	stage.addChild(label);
+
+	var label2 = casual.clone(label);
+	label2.x = 95;
+	label2.y = 220;
+	label2.font = "12px Arial";
+	label2.text = "Pixel Collision";
+	stage.addChild(label2);
+
+	var label3 = casual.clone(label2);
+	label3.x = 310;
+	label3.y = 200;
+	label3.text = "Pixel Collision";
+	stage.addChild(label3);
+
+	var label4 = casual.clone(label2);
+	label4.x = 505;
+	label4.y = 210;
+	label4.text = "Rectangle Collision";
+	stage.addChild(label4);
+
+	pig = new Bitmap(img_pig);
+	pig.x = 300;
+	pig.y = 260;
+	stage.addChild(pig);	
+	
+	//handle mouse events for the pig
+	pig.mouseEnabled = true;
+	pig.onMouseEvent = function(e)
+	{
+		if(e.type == "mousedown")
+		{
+			stage.startDrag(this);
+		}else if(e.type == "mouseup")
+		{
+			stage.stopDrag();
+		}else if(e.type == "mousemove")
+		{
+			if(pig.hitTestObject(bird1, true) || pig.hitTestObject(bird2, true) || pig.hitTestObject(bird3, false))
+			{
+				pig.alpha = 0.4;
+			}else
+			{
+				pig.alpha = 1.0;
+			}
+		}
+	}
+
+	//logo
+	var mylogo = new Bitmap(logo);
+	mylogo.x = stage.getStageWidth() - 200;
+	mylogo.y = stage.getStageHeight() - 60;
+	mylogo.scaleX = mylogo.scaleY = 0.6;
+	mylogo.alpha = 0.5;
+	stage.addChild(mylogo);
+}
+
+</script>
+
+</head>
+
+<body onLoad="init();">	
+	<div class="main">
+		<div class="canvasContainer">
+			<canvas id="canvas" width="700" height="500">Sorry, your browser doesn't support Canvas.</canvas>
+		</div>
+
+		<div class="intro">
+<h2>Object Collision</h2>
+On the left canvas, It illustrates how display object collision works in CasualJS Framework.
+
+<h3>Collision Approach</h3>
+Firstly, each display object has a bound rectangle, you can get it with DisplayObject.getRect(). We compute the intersection of the two rectangles of comparing objects, if so, we check the bitmap pixels within the intersection rectangle to see if they are collision.<br><br>
+
+Methods to use:<br>
+<span class="code">
+DisplayObject.getRect(target);<br>
+DisplayObject.hitTestObject(object, usePixelCollision, tolerance);
+</span><br><br>
+
+The second parameter "usePixelCollision" determines whether to use pixel collision or simple rectangle collision.<br><br>
+
+For example:<br>
+<span class="code">
+var bmp1 = new Bitmap(img1);<br>
+stage.addChild(bmp1);<br>
+var bmp2 = new Bitmap(img2);<br>
+stage.addChild(bmp2);<br><br>
+trace(bmp1.hitTestObject(bmp2, false));<br>
+trace(bmp1.hitTestObject(bmp2, true));
+</span>
+
+		</div>
+	</div>
+	<!-- test images -->
+	<img id="logo" src="images/logo.png" style="display:none;" />
+	<img id="pig" src="images/pig.png" style="display:none;" />
+	<img id="bird1" src="images/bird1.png" style="display:none;" />
+	<img id="bird2" src="images/bird2.png" style="display:none;" />
+	<img id="bird3" src="images/bird3.png" style="display:none;" />
+	<div id="footer">
+    	<div id="footer-content">
+        	<span>© Copyright 2011 HTML5idea.com, RIAidea.com · All Rights Reserved · Powered by Flashlizi</span>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<html>
+
+<head>
+<meta name="Author" content="flashlizi - www.riaidea.com">
+<meta name="Keywords" content="HTML5,canvas,casual framework">
+<meta name="Description" content="HTML5 canvas experiment">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Button Demo - CasualJS Framework</title>
+
+<link type="text/css" href="css/style.css" media="screen" rel="stylesheet" />
+<script type="text/javascript" src="../js/casual-0.1.min.js"></script>
+
+<script type="text/javascript">
+var canvas, context, stage;
+var logo, buttons, label;
+
+function init()
+{
+	//init canvas
+	canvas = document.getElementById("canvas");
+	context = canvas.getContext("2d");
+
+	//images
+	logo = document.getElementById("logo");
+	buttons = document.getElementById("buttons");
+
+	start();
+}
+
+function start()
+{	
+	//create stage
+	stage = new Stage(context);
+	stage.setFrameRate(10);
+	
+	//play button
+	var up = new Bitmap(buttons, [0, 0, 64, 64]);
+	var over = new Bitmap(buttons, [64, 0, 64, 64]);
+	var down = new Bitmap(buttons, [128, 0, 64, 64]);
+	var disbaled = new Bitmap(buttons, [192, 0, 64, 64]);
+	var playBtn = new Button(up, over, down, disbaled);
+	playBtn.x = 250;
+	playBtn.y = 50;
+	playBtn.name = "playBtn";
+	stage.addChild(playBtn);
+
+	//stop button
+	up = new Bitmap(buttons, [0, 64, 64, 64]);
+	over = new Bitmap(buttons, [64, 64, 64, 64]);
+	down = new Bitmap(buttons, [128, 64, 64, 64]);
+	disbaled = new Bitmap(buttons, [192, 64, 64, 64]);
+	var stopBtn = new Button(up, over, down, disbaled);
+	stopBtn.x = 400;
+	stopBtn.y = 50;
+	stopBtn.name = "stopBtn";
+	stage.addChild(stopBtn);
+	
+	//register mouse event handlers	
+	playBtn.onMouseMove = playBtn.onMouseOver = playBtn.onMouseOut = playBtn.onMouseDown = playBtn.onMouseUp = mouseHandler;
+	stopBtn.onMouseMove = stopBtn.onMouseOver = stopBtn.onMouseOut = stopBtn.onMouseDown = stopBtn.onMouseUp = mouseHandler;
+	
+	//mouse event label
+	label = new Text();
+	label.x = 100;
+	label.y = 150;
+	label.color = "#fff";
+	label.font = "18px Arial";
+	label.align = "start";
+	label.text = "                         Please try to click on top buttons";
+	stage.addChild(label);		
+	
+	var label2 = casual.clone(label);
+	label2.x = 110;
+	label2.y = 280;
+	label2.font = "14px Arial";
+	label2.text = "Below are the original bitmap:";
+	stage.addChild(label2);
+	
+	//original bitmap of buttons
+	var origin = new Bitmap(buttons);
+	origin.x = 100;
+	origin.y = 300;
+	stage.addChild(origin);	
+
+	//logo
+	var mylogo = new Bitmap(logo);
+	mylogo.x = stage.getStageWidth() - 200;
+	mylogo.y = stage.getStageHeight() - 60;
+	mylogo.scaleX = mylogo.scaleY = 0.6;
+	mylogo.alpha = 0.5;
+	stage.addChild(mylogo);
+}
+
+function mouseHandler(e)
+{
+	label.text = "Event type=" + e.type + ", target=" + this + ", mouseX=" + e.mouseX + ", mouseY=" + e.mouseY;
+}
+
+</script>
+
+</head>
+
+<body onLoad="init();">	
+	<div class="main">
+		<div class="canvasContainer">
+			<canvas id="canvas" width="700" height="500">Sorry, your browser doesn't support Canvas.</canvas>
+		</div>
+
+		<div class="intro">
+<h2>Causal Button</h2>
+On the left canvas, It illustrates Button class in CasualJS Framework.
+
+<h3>1) Inherit from MovieClip</h3>
+A Button is a MovieClip in CasualJS. Typically, there 4 frames in a Button which represent 4 states: up, over, down, disbled. <br>You can set display objects as skins, handle mouse events easily.<br><br>
+<span class="code">
+<li><b>Button.state.UP</b> <span class="comment">// up<br></span></li>
+<li><b>Button.state.OVER</b> <span class="comment">// over<br></span></li>
+<li><b>Button.state.DOWN</b> <span class="comment">// down<br></span></li>
+<li><b>Button.state.DISABLED</b> <span class="comment">// disbled<br></span></li>
+</span><br>
+
+Constructor:<br>
+<span class="code">
+function(upState, overState, downState, disabledState)
+</span><br><br>
+
+For example:<br>
+<span class="code">
+var up = new Bitmap(buttons, [0, 0, 64, 64]);<br>
+var over = new Bitmap(buttons, [64, 0, 64, 64]);<br>
+var down = new Bitmap(buttons, [128, 0, 64, 64]);<br>
+var disbaled = new Bitmap(buttons, [192, 0, 64, 64]);<br>
+var playBtn = new Button(up, over, down, disbaled);<br>
+playBtn.x = 250;<br>
+playBtn.y = 50;<br>
+stage.addChild(playBtn);<br>
+</span>
+
+<h3>2) Handle Mouse Events</h3>
+It's very easy to handle mouse events for buttons, you just need to set a callback for specific mouse event:<br><br>
+<span class="comment">//these callbacks are null by default<br></span>
+<span class="code">
+<li><b>onMouseMove</b></li>
+<li><b>onMouseOver</b></li>
+<li><b>onMouseOut</b></li>
+<li><b>onMouseDown</b></li>
+<li><b>onMouseUp</b></li>
+</span>
+
+		</div>
+	</div>
+	<!-- test images -->
+	<img id="logo" src="images/logo.png" style="display:none;" />
+	<img id="buttons" src="images/buttons.png" style="display:none;" />
+	<div id="footer">
+    	<div id="footer-content">
+        	<span>© Copyright 2011 HTML5idea.com, RIAidea.com · All Rights Reserved · Powered by Flashlizi</span>
+        </div>
+    </div>
+
+</body>
+</html>

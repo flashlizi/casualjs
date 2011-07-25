@@ -1,0 +1,159 @@
+<html>
+
+<head>
+<meta name="Author" content="flashlizi - www.riaidea.com">
+<meta name="Keywords" content="HTML5,canvas,casual framework">
+<meta name="Description" content="HTML5 canvas experiment">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+<title>Graphics Demo - CasualJS Framework</title>
+
+<link type="text/css" href="css/style.css" media="screen" rel="stylesheet" />
+<script type="text/javascript" src="../js/casual-0.1.min.js"></script>
+
+<script type="text/javascript">
+var canvas, context, stage;
+var logo, bg1, bg2, bg3;
+
+function init()
+{
+	//init canvas
+	canvas = document.getElementById("canvas");
+	context = canvas.getContext("2d");
+
+	//images
+	logo = document.getElementById("logo");
+	bg1 = document.getElementById("bg1");
+	bg2 = document.getElementById("bg2");
+	bg3 = document.getElementById("bg3");
+
+	start();
+}
+
+function start()
+{
+	//create stage
+	stage = new Stage(context);
+	stage.setFrameRate(0);		
+	
+	//normal rectangle
+	var rect = new Shape();
+	rect.graphics.lineStyle(1, "#fff");
+	rect.graphics.beginBitmapFill(bg1);
+	rect.graphics.drawRect(0.5, 0.5, 200, 200);
+	rect.graphics.endFill();
+	rect.x = 30;
+	rect.y = 30;
+	stage.addChild(rect);
+	
+	//round rectangle, rotated by its center point, chaining syntax support
+	var roundRect = new Shape();
+	roundRect.graphics.lineStyle(10, "#431608").beginBitmapFill(bg2).drawRoundRect(10, 10, 180, 180, 20);
+	roundRect.x = 390;
+	roundRect.y = 120;
+	roundRect.regX = 90;
+	roundRect.regY = 90;
+	roundRect.rotation = 45;
+	stage.addChild(roundRect);
+	
+	//circle with radial gradient fill
+	var circle = new Shape();
+	circle.graphics.lineStyle(2, "#7db9e8").drawCircle(2, 2, 100);
+	circle.graphics.beginRadialGradientFill(100, 100, 0, 100, 100, 100, ["#7db9e8", "#1E5799"], [0, 1]).endFill();
+	circle.x = 20;
+	circle.y = 270;
+	stage.addChild(circle);
+	
+	//ellipse with bitmap fill
+	var ellipse = new Shape();
+	ellipse.graphics.drawEllipse(5, 5, 200, 150);
+	ellipse.graphics.lineStyle(5, "#12161f").beginBitmapFill(bg3).endFill();
+	ellipse.x = 300;
+	ellipse.y = 295;
+	stage.addChild(ellipse);
+
+	//rectangle with linear gradient fill
+	var rect2 = new Shape();
+	rect2.graphics.lineStyle(4, "#111").beginLinearGradientFill(0, 0, 60, 0, ["#959595", "#010101", "#4e4e4e", "#383838", "#1b1b1b"], [0, 0.5, 0.76, 0.87, 1]).drawRect(2, 2, 60, 400);
+	rect2.x = 600;
+	rect2.y = 20;
+	stage.addChild(rect2);
+	
+	//logo
+	var mylogo = new Bitmap(logo);
+	mylogo.x = stage.getStageWidth() - 200;
+	mylogo.y = stage.getStageHeight() - 60;
+	mylogo.scaleX = mylogo.scaleY = 0.6;
+	mylogo.alpha = 0.5;
+	stage.addChild(mylogo);
+}
+</script>
+
+</head>
+
+<body onload="init();">	
+	<div class="main">
+		<div class="canvasContainer">
+			<canvas id="canvas" width="700" height="500">Sorry, your browser doesn't support Canvas.</canvas>
+		</div>
+		<div class="intro">
+
+<h2>Causal Graphics</h2>
+On the left canvas, It illustrates how to create Shapes by using Graphics class in CasualJS Framework.
+The drawing methods follow the Graphics library in the AS3.
+
+<h2>How to create Graphics?</h2>
+The syntax is very similar to Graphics in AS3, for example:<br><br>
+<span class="comment">//Normal rectangle<br></span>
+<span class="code">
+var rect = new Shape();<br>
+rect.graphics.lineStyle(2, "#fff");<br>
+rect.graphics.beginFill("#fc0");<br>
+rect.graphics.drawRect(2, 2, 100, 100);<br>
+rect.graphics.endFill();<br>
+stage.addChild(rect);<br><br>
+</span>
+
+<span class="comment">//It also supports chaining syntax:<span><br>
+<span class="code">
+var rect = new Shape();<br>
+rect.graphics.lineStyle(2, "#fff").beginFill("#fc0").drawRect(2, 2, 100, 100).endFill();<br>
+stage.addChild(rect);
+</span>
+
+<h2>Graphics APIs</h2>
+<span class="code">
+<li><b>lineStyle</b> (thickness, lineColor, alpha, lineCap, lineJoin, miterLimit)</li>
+<li><b>beginFill</b> (fill, alpha)</li>
+<li><b>beginBitmapFill</b> (image, repetition)</li>
+<li><b>beginLinearGradientFill</b> (x0, y0, x1, y1, colors, ratios)</li>
+<li><b>beginRadialGradientFill</b> (x0, y0, r0, x1, y1, r1, colors, ratios)</li>
+<li><b>endFill</b></li>
+<li><b>drawRect</b> (x, y, width, height)</li>
+<li><b>drawRoundRect</b> (x, y, width, height, cornerSize)</li>
+<li><b>drawCircle</b> (x, y, radius)</li>
+<li><b>drawRoundRectComplex</b> (x, y, width, height, cornerTL, cornerTR, cornerBR, cornerBL)</li>
+<li><b>drawEllipse</b> (x, y, width, height)</li>
+<li><b>beginPath</b></li>
+<li><b>closePath</b></li>
+<li><b>moveTo</b> (x, y)</li>
+<li><b>lineTo</b> (x, y)</li>
+<li><b>curveTo</b> (controlX, controlY, anchorX, anchorY)</li>
+<li><b>clear</b></li>
+</span>
+		</div>	
+
+	</div>
+	<!-- test images -->
+	<img id="logo" src="images/logo.png" style="display:none;" />
+	<img id="bg1" src="images/bg1.jpg" style="display:none;" />
+	<img id="bg2" src="images/bg2.png" style="display:none;" />
+	<img id="bg3" src="images/bg3.png" style="display:none;" />
+
+	<div id="footer">
+    	<div id="footer-content">
+        	<span>© Copyright 2011 HTML5idea.com, RIAidea.com · All Rights Reserved · Powered by Flashlizi</span>
+        </div>
+    </div>
+	
+</body>
+</html>

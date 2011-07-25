@@ -1,0 +1,192 @@
+<html>
+
+<head>
+<meta name="Author" content="flashlizi - www.riaidea.com">
+<meta name="Keywords" content="HTML5,canvas,casual framework">
+<meta name="Description" content="HTML5 canvas experiment">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>DisplayObject Demo - CasualJS Framework</title>
+
+<link type="text/css" href="css/style.css" media="screen" rel="stylesheet" />
+<script type="text/javascript" src="../js/casual-0.1.min.js"></script>
+
+<script type="text/javascript">
+var canvas, context, stage, scene;
+var logo;
+
+function init()
+{
+	//init canvas
+	canvas = document.getElementById("canvas");
+	context = canvas.getContext("2d");
+
+	//images
+	logo = document.getElementById("logo");
+
+	start();
+}
+
+function start()
+{	
+	//create stage
+	stage = new Stage(context);
+	stage.setFrameRate(20);
+	
+	//main scene
+	scene = new Sprite();
+	scene.id = "scene";
+	scene.x = 20;
+	scene.y = 20;
+	stage.addChild(scene);
+	
+	//a shape width a rectangle and a circle
+	var shape = new Shape();
+	shape.graphics.lineStyle(1, "#ffffff");
+	shape.graphics.drawRect(0.5, 0.5, 100, 100).drawCircle(150, 1, 50);
+	shape.x = 200;
+	scene.addChild(shape);
+	
+	//a nested sprite for testing nested display list
+	var nested = new Sprite();
+	nested.name = "nested";
+	nested.x = 50;
+	nested.y = 50;
+	scene.addChild(nested);	
+	
+	//a normal bitmap
+	var normalBmp = new Bitmap(logo);
+	normalBmp.y = 50;
+	nested.addChild(normalBmp);
+	
+	//a x-flipped and scaled bitmap
+	var scaleBmp = new Bitmap(logo);
+	scaleBmp.scaleX = -0.5;
+	scaleBmp.scaleY = 0.5;
+	scaleBmp.x = normalBmp.x + normalBmp.width + 200;
+	scaleBmp.y = 80;
+	nested.addChild(scaleBmp);
+	
+	//a rotating bitmap 
+	var rotateBmp = new Bitmap(logo);
+	rotateBmp.name = "rotateBmp";
+	rotateBmp.x = 150;
+	rotateBmp.y = 270;
+	rotateBmp.regX = 160;
+	rotateBmp.regY = 43;
+	nested.addChild(rotateBmp);	
+
+	//logo
+	var mylogo = new Bitmap(logo);
+	mylogo.x = stage.getStageWidth() - 200;
+	mylogo.y = stage.getStageHeight() - 60;
+	mylogo.scaleX = mylogo.scaleY = 0.6;
+	mylogo.alpha = 0.5;
+	stage.addChild(mylogo);
+
+	stage.addEventListener(StageEvent.ENTER_FRAME, enterFrameHandler);
+}
+
+function enterFrameHandler(e)
+{
+	var rotateBmp = scene.getChildByName("nested").getChildByName("rotateBmp");
+	var a = rotateBmp.rotation%360;
+	var b = rotateBmp.rotation/360>>0;
+	rotateBmp.alpha += b%2 ? 0.05 : -0.05;
+	if(rotateBmp.alpha <=0.05) rotateBmp.alpha = 0.05;
+	rotateBmp.rotation = rotateBmp.rotation + 18;
+}
+</script>
+
+</head>
+
+<body onLoad="init();">	
+	<div class="main">
+		<div class="canvasContainer">
+			<canvas id="canvas" width="700" height="500">Sorry, your browser doesn't support Canvas.</canvas>
+		</div>
+
+		<div class="intro">
+<h2>Causal DisplayObject</h2>
+On the left canvas, It illustrates how to create display objects by using DisplayObject class in CasualJS Framework.
+
+<h3>1) Initialize a stage for canvas</h3>
+Like AS3, everything goes from stage. To use CasualJS, you need to create a stage first.<br><br>
+<span class="comment">//Create a stage, bind to a context<br></span>
+<span class="code">
+var stage = new Stage(context);<br>
+stage.setFrameRate(20);<br><br>
+</span>
+
+<h3>2) Add display objects to stage</h3>
+Yes, it's so familiar for you to use addChild() method to add display objects to stage.<br><br>
+<span class="comment">//add a shape with a rectangle and a circle to stage<br></span>
+<span class="code">
+var shape = new Shape();<br>
+shape.graphics.lineStyle(1, "#ffffff");<br>
+shape.graphics.drawRect(0.5, 0.5, 100, 100).drawCircle(150, 1, 50);<br>
+shape.x = 200;<br>
+stage.addChild(shape);<br>
+</span>
+
+<h3>3) Add display containers to stage</h3>
+Typically, you can use Sprites as display containers which has display children.<br><br>
+<span class="comment">//add a sprite as a display container to stage<br></span>
+<span class="code">
+var container = new Sprite();<br>
+container.x = 20;<br>
+container.y = 20;<br>
+stage.addChild(container);<br>
+</span>
+
+<h3>4) Listen ENTER_FRAME or MOUSE events</h3>
+CasualJS provides a basic event mode for handling interactions, the syntax follows AS3 events library.<br><br>
+<span class="code">
+stage.addEventListener(StageEvent.ENTER_FRAME, enterFrameHandler);<br>
+stage.addEventListener(StageEvent.MOUSE_DOWN, mouseDownHandler);<br>
+</span>
+
+<h2>DisplayObject APIs</h2>
+<span class="code">
+Properties:
+<li><b>name</b></li>
+<li><b>id</b></li>
+<li><b>x</b></li>
+<li><b>y</b></li>
+<li><b>regX</b></li>
+<li><b>regY</b></li>
+<li><b>width</b></li>
+<li><b>height</b></li>
+<li><b>scaleX</b></li>
+<li><b>scaleY</b></li>
+<li><b>rotation</b></li>
+<li><b>alpha</b></li>
+<li><b>visible</b></li>
+<li><b>mouseEnabled</b></li>
+<li><b>parent</b></li>
+<li><b>stage</b></li><br>
+
+Methods:
+<li><b>getCurrentWidth</b> ()</li>
+<li><b>getCurrentHeight</b> ()</li>
+<li><b>getStage</b> ()</li>
+<li><b>localToGlobal</b> (x, y)</li>
+<li><b>globalToLocal</b> (x, y)</li>
+<li><b>localToTarget</b> (x, y, target)</li>
+<li><b>hitTestPoint</b> (x, y, usePixelCollision, tolerance)</li>
+<li><b>render</b> (context)</li>
+<li><b>toString</b> ()</li>
+
+</span>
+		</div>
+	</div>
+	<!-- test images -->
+	<img id="logo" src="images/logo.png" style="display:none;" />
+
+	<div id="footer">
+    	<div id="footer-content">
+        	<span>© Copyright 2011 HTML5idea.com, RIAidea.com · All Rights Reserved · Powered by Flashlizi</span>
+        </div>
+    </div>
+
+</body>
+</html>

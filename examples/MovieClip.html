@@ -1,0 +1,317 @@
+<html>
+
+<head>
+<meta name="Author" content="flashlizi - www.riaidea.com">
+<meta name="Keywords" content="HTML5,canvas,casual framework">
+<meta name="Description" content="HTML5 canvas experiment">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>MovieClip Demo - CasualJS Framework</title>
+
+<link type="text/css" href="css/style.css" media="screen" rel="stylesheet" />
+<script type="text/javascript" src="../js/casual-0.1.min.js"></script>
+
+<script type="text/javascript">
+var canvas, context, stage;
+var logo, char1Frames, char2Frames, mychar1, mychar2;
+
+function init()
+{
+	//init canvas
+	canvas = document.getElementById("canvas");
+	context = canvas.getContext("2d");
+
+	//images
+	logo = document.getElementById("logo");
+	var char1 = document.getElementById("char1");
+	var char2 = document.getElementById("char2");	
+	
+	char1Frames = 
+	{		
+		down:[
+		new Frame(new Bitmap(char1, [3,2,32,50]), "down"),
+		new Frame(new Bitmap(char1, [43,2,32,50])),
+		new Frame(new Bitmap(char1, [83,2,32,50])),
+		new Frame(new Bitmap(char1, [123,2,32,50]), null, "down")],
+		
+		right:[
+		new Frame(new Bitmap(char1, [3,110,32,50]), "right"),
+		new Frame(new Bitmap(char1, [43,110,32,50])),
+		new Frame(new Bitmap(char1, [83,110,32,50])),
+		new Frame(new Bitmap(char1, [123,110,32,50]), null, "right")],
+		
+		top:[
+		new Frame(new Bitmap(char1, [3,164,32,50]), "top"),
+		new Frame(new Bitmap(char1, [43,164,32,50])),
+		new Frame(new Bitmap(char1, [83,164,32,50])),
+		new Frame(new Bitmap(char1, [123,164,32,50]), null, "top")],
+		
+		left:[
+		new Frame(new Bitmap(char1, [3,56,32,50]), "left"),
+		new Frame(new Bitmap(char1, [43,56,32,50])),
+		new Frame(new Bitmap(char1, [83,56,32,50])),
+		new Frame(new Bitmap(char1, [123,56,32,50]), null, "left")]
+	};
+
+	char2Frames = 
+	{
+		down:[
+		new Frame(new Bitmap(char2, [16,7,32,50]), "down"),
+		new Frame(new Bitmap(char2, [80,7,32,50])),
+		new Frame(new Bitmap(char2, [144,7,32,50])),
+		new Frame(new Bitmap(char2, [208,7,32,50]), null, "down")],
+		
+		right:[
+		new Frame(new Bitmap(char2, [16,134,32,50]), "right"),
+		new Frame(new Bitmap(char2, [80,134,32,50])),
+		new Frame(new Bitmap(char2, [144,134,32,50])),
+		new Frame(new Bitmap(char2, [208,134,32,50]), null, "right")],
+		
+		top:[
+		new Frame(new Bitmap(char2, [16,198,32,50]), "top"),
+		new Frame(new Bitmap(char2, [80,198,32,50])),
+		new Frame(new Bitmap(char2, [144,198,32,50])),
+		new Frame(new Bitmap(char2, [208,198,32,50]), null, "top")],
+		
+		left:[
+		new Frame(new Bitmap(char2, [16,70,32,50]), "left"),
+		new Frame(new Bitmap(char2, [80,70,32,50])),
+		new Frame(new Bitmap(char2, [144,70,32,50])),
+		new Frame(new Bitmap(char2, [208,70,32,50]), null, "left")]	
+	}
+
+	start();
+}
+
+function start()
+{	
+	//create stage
+	stage = new Stage(context);
+	stage.setFrameRate(8);
+	
+	//char1: down direction
+	var mychar1_down = new MovieClip(char1Frames.down);
+	mychar1_down.x = 100;
+	mychar1_down.y = 100;
+	stage.addChild(mychar1_down);
+	
+	//char1: left direction
+	var mychar1_left = new MovieClip(char1Frames.left);
+	mychar1_left.x = 200;
+	mychar1_left.y = 100;
+	stage.addChild(mychar1_left);
+	
+	//char1: top direction
+	var mychar1_top = new MovieClip(char1Frames.top);
+	mychar1_top.x = 300;
+	mychar1_top.y = 100;
+	stage.addChild(mychar1_top);
+	
+	//char1: right direction
+	var mychar1_right = new MovieClip(char1Frames.right);
+	mychar1_right.x = 400;
+	mychar1_right.y = 100;
+	stage.addChild(mychar1_right);	
+	
+	//char1: composition of 4 direction
+	mychar1 = new MovieClip();
+	mychar1.addFrame(char1Frames.down);
+	mychar1.addFrame(char1Frames.right);
+	mychar1.addFrame(char1Frames.top);
+	mychar1.addFrame(char1Frames.left);		
+	mychar1.x = 500;
+	mychar1.y = 50;
+	mychar1.speed = 5;
+	changeDirection(mychar1, "down");
+	stage.addChild(mychar1);
+	
+	//char2: down direction
+	var mychar2_down = new MovieClip(char2Frames.down);
+	mychar2_down.x = 100;
+	mychar2_down.y = 300;
+	stage.addChild(mychar2_down);
+	
+	//char2: left direction
+	var mychar2_left = new MovieClip(char2Frames.left);
+	mychar2_left.x = 200;
+	mychar2_left.y = 300;
+	stage.addChild(mychar2_left);
+	
+	//char2: top direction
+	var mychar2_top = new MovieClip(char2Frames.top);
+	mychar2_top.x = 300;
+	mychar2_top.y = 300;
+	stage.addChild(mychar2_top);
+	
+	//char2: right direction
+	var mychar2_right = new MovieClip(char2Frames.right);
+	mychar2_right.x = 400;
+	mychar2_right.y = 300;
+	stage.addChild(mychar2_right);	
+	
+	//char2: composition of 4 direction
+	mychar2 = new MovieClip();
+	mychar2.addFrame(char2Frames.down);
+	mychar2.addFrame(char2Frames.right);
+	mychar2.addFrame(char2Frames.top);
+	mychar2.addFrame(char2Frames.left);		
+	mychar2.x = 500;
+	mychar2.y = 300;
+	mychar2.speed = 5;
+	changeDirection(mychar2, "top");	
+	stage.addChild(mychar2);
+
+	//logo
+	var mylogo = new Bitmap(logo);
+	mylogo.x = stage.getStageWidth() - 200;
+	mylogo.y = stage.getStageHeight() - 60;
+	mylogo.scaleX = mylogo.scaleY = 0.6;
+	mylogo.alpha = 0.5;
+	stage.addChild(mylogo);
+
+	stage.addEventListener(StageEvent.ENTER_FRAME, enterFrameHandler);
+}
+
+function enterFrameHandler(e)
+{
+	//move mychar1 anti-clockwise, mychar2 clockwise
+	switch(mychar1.direction)
+	{
+		case "down":
+		if(mychar1.y < 150)
+		{
+			mychar1.y += mychar1.speed;
+			mychar2.y -= mychar2.speed;
+		}else
+		{
+			changeDirection(mychar1, "right");
+			changeDirection(mychar2, "right");
+		}
+		break;
+
+		case "right":
+		if(mychar1.x < 600)
+		{
+			mychar1.x += mychar1.speed;
+			mychar2.x += mychar2.speed;
+		}else
+		{
+			changeDirection(mychar1, "top");
+			changeDirection(mychar2, "down");
+		}
+		break;
+
+		case "top":
+		if(mychar1.y > 50)
+		{
+			mychar1.y -= mychar1.speed;
+			mychar2.y += mychar2.speed;
+		}else
+		{
+			changeDirection(mychar1, "left");
+			changeDirection(mychar2, "left");
+		}
+		break;
+
+		case "left":
+		if(mychar1.x > 500)
+		{
+			mychar1.x -= mychar1.speed;
+			mychar2.x -= mychar2.speed;
+		}else
+		{
+			changeDirection(mychar1, "down");
+			changeDirection(mychar2, "top");
+		}
+		break;
+	}
+}
+
+function changeDirection(mychar, dir)
+{
+	mychar.direction = dir;
+	mychar.gotoAndPlay(dir);
+}
+
+</script>
+
+</head>
+
+<body onLoad="init();">	
+	<div class="main">
+		<div class="canvasContainer">
+			<canvas id="canvas" width="700" height="500">Sorry, your browser doesn't support Canvas.</canvas>
+		</div>
+
+		<div class="intro">
+<h2>Causal MovieClip and Frame</h2>
+On the left canvas, It illustrates how to create animations by using MovieClip and Frame class in CasualJS Framework.
+
+<h3>1) Create frames for a MovieClip</h3>
+Each MovieClip is composited by frames. We can simply say, a Frame represents a certain DisplayObject, it has properties as below:<br><br>
+<span class="code">
+<li><b>disObj</b> <span class="comment">//display object of the frame<br></span></li>
+<li><b>label</b> <span class="comment">//a label for the frame<br></span></li>
+<li><b>gotoFrame</b> <span class="comment">//can be either frameNumber or frameLabel<br></span></li>
+<li><b>pauseFrames</b> <span class="comment">//number of frames to pause<br></span></li>
+<li><b>stop</b> <span class="comment">//whether stop when play to this frame<br></span></li>
+</span><br>
+
+Constructor:<br>
+<span class="code">
+function(disObj, label, gotoFrame, pauseFrames, stop)
+</span><br><br>
+
+For example:<br>
+<span class="code">
+var frame = new Frame(new Bitmap(image, [16,70,32,50]));
+</span>
+
+<h3>2) Instantiate MovieClips</h3>
+Once the frames have been created, It's easy to create MovieClips and display them.<br><br>
+<span class="comment">//pass frames data as parameter of constructor<br></span>
+<span class="code">
+var mc = new MovieClip(frames);<br>
+stage.addChild(mc);<br>
+</span><br>
+
+<span class="comment">//add different frame groups<br></span>
+<span class="code">
+var mc = new MovieClip();<br>
+mc.addFrame(frames_left);<br>
+mc.addFrame(frames_right);<br>
+stage.addChild(mc);<br>
+</span>
+
+<h3>3) Control MovieClips</h3>
+You can use Frame.gotFrame, Frame.pauseFrames and Frame.stop properties to control the playing of MovieClips.<br><br>
+
+You can also use these methods of MovieClip to control it:<br><br>
+<span class="code">
+<li><b>play</b> ()</li>
+<li><b>stop</b> ()</li>
+<li><b>gotoAndPlay</b> (frameNumberOrLabel)</li>
+<li><b>gotoAndStop</b> (frameNumberOrLabel)</li>
+<li><b>currentFrame</b></li>
+<li><b>nextFrame</b> ()</li>
+<li><b>getTotalFrames</b> ()</li>
+<li><b>addFrame</b> (data)</li>
+<li><b>addFrameAt</b> (data, frameNumber)</li>
+<li><b>setFrame</b> (frameNumber, data)</li>
+<li><b>getFrame</b> (frameNumberOrLabel)</li>
+<li><b>removeFrame</b> (frameNumberOrLabel)</li>
+</span>
+		</div>
+	</div>
+	<!-- test images -->
+	<img id="logo" src="images/logo.png" style="display:none;" />
+	<img id="char1" src="images/char1.png" style="display:none;" />
+	<img id="char2" src="images/char2.png" style="display:none;" />
+
+	<div id="footer">
+    	<div id="footer-content">
+        	<span>© Copyright 2011 HTML5idea.com, RIAidea.com · All Rights Reserved · Powered by Flashlizi</span>
+        </div>
+    </div>
+
+</body>
+</html>
