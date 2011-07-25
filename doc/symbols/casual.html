@@ -300,34 +300,6 @@ ul.inheritsList
 
 <!-- ============================== properties summary ===================== -->
 			
-				
-				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class casual.">
-					<caption>Field Summary</caption>
-					<thead>
-						<tr>
-							<th scope="col">Field Attributes</th>
-							<th scope="col">Field Name and Description</th>
-						</tr>
-					</thead>
-					<tbody>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								casual.<b><a href="../symbols/casual.html#.userAgent">userAgent</a></b>
-								</div>
-								<div class="description">CasualJS Framework by Flashlizi, Copyright (c) 2011 RIAidea.comProject Homepage: www.html5idea.com and http://code.google.com/p/casualjs/Permission is hereby granted, free of charge, to any personobtaining a copy of this software and associated documentationfiles (the "Software"), to deal in the Software withoutrestriction, including without limitation the rights to use,copy, modify, merge, publish, distribute, sublicense, and/or sellcopies of the Software, and to permit persons to whom theSoftware is furnished to do so, subject to the followingconditions:The above copyright notice and this permission notice shall beincluded in all copies or substantial portions of the Software.</div>
-							</td>
-						</tr>
-					
-					</tbody>
-				</table>
-				
-				
-				
-			
 
 <!-- ============================== methods summary ======================== -->
 			
@@ -355,9 +327,9 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">casual.<b><a href="../symbols/casual.html#.copy">copy</a></b>(obj, targetClass)
+								<div class="fixedFont">casual.<b><a href="../symbols/casual.html#.copy">copy</a></b>(obj, targetClass, newProperties)
 								</div>
-								<div class="description">Make a copy of the parameter obj, you also can specify the target class.</div>
+								<div class="description">Make a copy of the parameter obj, you also can specify the target class and set new properties.</div>
 							</td>
 						</tr>
 					
@@ -367,15 +339,6 @@ ul.inheritsList
 								<div class="fixedFont">casual.<b><a href="../symbols/casual.html#.delegate">delegate</a></b>(func, self, args)
 								</div>
 								<div class="description">Delegate the reference of this within functions.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">casual.<b><a href="../symbols/casual.html#.getUserAgent">getUserAgent</a></b>()
-								</div>
-								<div class="description"></div>
 							</td>
 						</tr>
 					
@@ -438,36 +401,6 @@ ul.inheritsList
 
 <!-- ============================== field details ========================== -->		
 			
-				<div class="sectionTitle">
-					Field Detail
-				</div>
-				
-					<a name=".userAgent"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">casual.</span><b>userAgent</b>
-					
-					</div>
-					<div class="description">
-						CasualJS Framework by Flashlizi, Copyright (c) 2011 RIAidea.comProject Homepage: www.html5idea.com and http://code.google.com/p/casualjs/Permission is hereby granted, free of charge, to any personobtaining a copy of this software and associated documentationfiles (the "Software"), to deal in the Software withoutrestriction, including without limitation the rights to use,copy, modify, merge, publish, distribute, sublicense, and/or sellcopies of the Software, and to permit persons to whom theSoftware is furnished to do so, subject to the followingconditions:The above copyright notice and this permission notice shall beincluded in all copies or substantial portions of the Software.THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIESOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE ANDNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHTHOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISINGFROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OROTHER DEALINGS IN THE SOFTWARE.
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/D__experiment_casualjs_src__core_userAgent.js.html">userAgent.js</a>.
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					
-				
-			
 
 <!-- ============================== method details ========================= -->		
 			
@@ -515,11 +448,11 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">casual.</span><b>copy</b>(obj, targetClass)
+					<span class="light">casual.</span><b>copy</b>(obj, targetClass, newProperties)
 					
 					</div>
 					<div class="description">
-						Make a copy of the parameter obj, you also can specify the target class.
+						Make a copy of the parameter obj, you also can specify the target class and set new properties.
 						
 						
 					</div>
@@ -538,6 +471,12 @@ ul.inheritsList
 							
 								<dt>
 									<b>targetClass</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>newProperties</b>
 									
 								</dt>
 								<dd></dd>
@@ -591,34 +530,6 @@ ul.inheritsList
 								<dd></dd>
 							
 							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".getUserAgent"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">casual.</span><b>getUserAgent</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/D__experiment_casualjs_src__core_userAgent.js.html">userAgent.js</a>.
-						
-						
-					</div>
-					
-					
-					
 						
 						
 						
@@ -708,7 +619,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Sun Mar 06 2011 15:04:59 GMT+0800 (CST)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Jul 25 2011 15:02:39 GMT+0800 (CST)
 		</div>
 	</body>
 </html>
