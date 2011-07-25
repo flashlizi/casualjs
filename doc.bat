@@ -1,1 +1,1 @@
-cmd /k java -jar E:/dev/js/jsdoc_toolkit-2.4.0/jsrun.jar E:/dev/js/jsdoc_toolkit-2.4.0/app/run.js src/ -r=3 -a -d=doc/ -t=doc_template/ --exclude="casual.js" --exclude="EventManager.js" --exclude="Astar.js"
+java -jar E:/dev/js/jsdoc_toolkit-2.4.0/jsrun.jar E:/dev/js/jsdoc_toolkit-2.4.0/app/run.js src/ -r=3 -a -d=doc/ -t=doc_template/ --exclude="casual.js" --exclude="EventManager.js" --exclude="Astar.js"
