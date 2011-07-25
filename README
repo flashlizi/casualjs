@@ -1,0 +1,6 @@
+What is CasualJS?
+-----------------
+
+CasualJS Framework是根据ActionScript3.0的架构开发的一套适用于HTML5 Canvas的面向对象的开发框架。
+目的是让你无缝的从AS3开发过渡到HTML5 Canvas开发。虽然Canvas提供了强大的绘图功能，但满足不了高级开发的需要。
+利用CasualJS的显示对象架构及渲染机制，你可以轻松的在Canvas中操控各种位图、图形、影片剪辑等显示对象，就如同在用AS3开发一样愉快。 
