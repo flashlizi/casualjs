@@ -57,8 +57,8 @@
 	mapClass("Point");
 	mapClass("Rectangle");
 	
-	mapClass("Astar");
-	mapClass("NameUtil");	
+	//mapClass("Astar");
+	mapClass("NameUtil");
 	
 	mapClass("DisplayObject");
 	mapClass("DisplayObjectContainer");

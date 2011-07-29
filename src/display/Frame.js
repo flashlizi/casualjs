@@ -50,8 +50,8 @@ casual.Frame = Frame;
  */
 Frame.prototype.render = function(context, x, y)
 {
-	if(x) this.disObj.x = x;
-	if(y) this.disObj.y = y;
+	if(x != undefined) this.disObj.x = x;
+	if(y != undefined) this.disObj.y = y;
 	this.disObj._render(context, false, false);
 }
 

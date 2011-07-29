@@ -43,45 +43,34 @@ casual.inherit(DisplayObjectContainer, casual.DisplayObject);
 casual.DisplayObjectContainer = DisplayObjectContainer;
 
 /**
- * Adds a child DisplayObject instance to this DisplayObjectContainer instance.
+ * Adds a child DisplayObject instance to the specific index of this DisplayObjectContainer instance.
  */
-DisplayObjectContainer.prototype.addChild = function(child)
+DisplayObjectContainer.prototype.addChildAt = function(child, index)
 {
-	if(this.getChildIndex(child) != -1)
+	if(index < 0) index = 0;
+	else if(index > this.children.length) index = this.children.length;
+	
+	var childIndex = this.getChildIndex(child);
+	if(childIndex != -1)
 	{
-		child.parent = this;
-		return child;
+		if(childIndex == index) return child;
+		this.children.splice(childIndex, 1);
+	}else if(child.parent)
+	{
+		child.parent.removeChild(child);
 	}
 
-	if(child.parent) child.parent.removeChild(child);
-	this.children[this.children.length] = child;
+	this.children.splice(index, 0, child);
 	child.parent = this;
 	return child;
 }
 
 /**
- * Adds a child DisplayObject instance to the specific index of this DisplayObjectContainer instance.
+ * Adds a child DisplayObject instance to this DisplayObjectContainer instance.
  */
-DisplayObjectContainer.prototype.addChildAt = function(child, index)
-{
-	if(this.getChildIndex(child) != -1)
-	{
-		child.parent = this;
-		return child;
-	}
-
-	if(child.parent) child.parent.removeChild(child);
-	this.children.splice(index, 0, child);
-	child.parent = this;	
-	return child;
-}
-
-/**
- * Removes the specified child DisplayObject instance from the child list of the DisplayObjectContainer instance.
- */
-DisplayObjectContainer.prototype.removeChild = function(child)
-{
-	return this.removeChildAt(this.children.indexOf(child));
+DisplayObjectContainer.prototype.addChild = function(child)
+{	
+	return this.addChildAt(child, this.children.length);
 }
 
 /**
@@ -89,7 +78,7 @@ DisplayObjectContainer.prototype.removeChild = function(child)
  */
 DisplayObjectContainer.prototype.removeChildAt = function(index)
 {
-	if (index < 0 || index > this.children.length - 1) return false;
+	if (index < 0 || index >= this.children.length) return false;
 	var child = this.children[index];
 	if (child != null) 
 	{
@@ -98,6 +87,14 @@ DisplayObjectContainer.prototype.removeChildAt = function(index)
 	}
 	this.children.splice(index, 1);
 	return true;
+}
+
+/**
+ * Removes the specified child DisplayObject instance from the child list of the DisplayObjectContainer instance.
+ */
+DisplayObjectContainer.prototype.removeChild = function(child)
+{
+	return this.removeChildAt(this.children.indexOf(child));
 }
 
 /**
@@ -130,7 +127,8 @@ DisplayObjectContainer.prototype.getChildByName = function(name)
 {
 	for(var i = 0, len = this.children.length; i < len; i++)
 	{
-		if(this.children[i].name == name) return this.children[i];
+		var child = this.children[i];
+		if(child.name == name) return child;
 	}
 	return null;
 }
@@ -140,7 +138,7 @@ DisplayObjectContainer.prototype.getChildByName = function(name)
  */
 DisplayObjectContainer.prototype.getChildAt = function(index)
 {
-	if (index < 0 || index > this.children.length - 1) return null;
+	if (index < 0 || index >= this.children.length) return null;
 	return this.children[index];
 }
 

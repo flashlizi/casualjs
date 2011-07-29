@@ -29,7 +29,10 @@
  * @name casual
  * @class Basic object of Casual Framework, provides some core functions.
  */
-var casual = {};
+var casual = 
+{
+	version: "0.1.2"
+};
 
 /**
  * Like trace() in as3, for debug purpose. you can just use trace().
