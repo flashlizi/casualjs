@@ -114,14 +114,28 @@ MovieClip.prototype.getFrame = function(frameNumberOrLabel)
  */
 MovieClip.prototype.removeFrame = function(frameNumberOrLabel)
 {
-	var frame = this.getFrame(frameNumberOrLabel);
-	var frameNumber = frameNumberOrLabel;
+	var frame = this.getFrame(frameNumberOrLabel),
+		frameNumber = frameNumberOrLabel;
 	if(frame.label)
 	{
 		frameNumber = this.getFrameNumber(frame);
 		delete this._frameLables[frame.label];
 	}
 	this._frames.splice(frameNumber - 1, 1);
+}
+
+/**
+ * Remove All Frame
+ */
+MoveClip.prototype.removeAllFrames = function()
+{
+	var _this = this;
+	this._frames.forEach(function( ele, index){
+		_this.removeFrame(index + 1);
+	});
+	this._frames = [];
+	this.removeAllChildren();
+	return this;
 }
 
 /**
