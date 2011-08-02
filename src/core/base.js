@@ -40,7 +40,8 @@ var casual =
 casual.trace = function()
 {
 	var logs = [];
-	for (var i = 0; i < arguments.length; i++) logs.push(arguments[i]);
+	//for (var i = 0; i < arguments.length; i++) logs.push(arguments[i]);
+	arguments.forEach( function( e ){ logs.push(e); });
 	//output to console.log by default
 	if(typeof(console) != "undefined" && typeof(console.log) != "undefined") console.log(logs.join(" "));
 };
@@ -66,16 +67,15 @@ casual.delegate = function(func, self, args)
   	if (arguments.length > 2) 
   	{
     	var boundArgs = Array.prototype.slice.call(arguments, 2);
-    	return function() 
-    	{
+    	return function(){
       		var newArgs = Array.prototype.slice.call(arguments);
       		Array.prototype.unshift.apply(newArgs, boundArgs);
       		return func.apply(context, newArgs);
     	};
-  	}else 
-  	{
-    	return function() { return func.apply(context, arguments); };
   	}
+
+	return function() { return func.apply(context, arguments); };
+
 };
 
 /**
@@ -95,6 +95,7 @@ casual.copy = function(obj, targetClass, newProperties)
 	{ 
 		if(targetClass) o = new targetClass();
 		else o = casual.clone(obj.constructor.prototype);
+		
 		for(var key in obj)
 		{ 
 			if (targetClass || obj.hasOwnProperty(key)) o[key] = obj[key];
