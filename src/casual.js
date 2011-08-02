@@ -52,6 +52,35 @@
 			else delete window[p];
 		}
 	}
+	/** this section is good if using host ;**/
+	// mapClass("trace");
+	// 
+	// mapClass("EventBase");
+	// mapClass("StageEvent");
+	// mapClass("EventDispatcher");
+	// 
+	// mapClass("Matrix");
+	// mapClass("Point");
+	// mapClass("Rectangle");
+	// 
+	// //mapClass("Astar");
+	// mapClass("NameUtil");
+	// 
+	// mapClass("DisplayObject");
+	// mapClass("DisplayObjectContainer");
+	// mapClass("Graphics");
+	// mapClass("Shape");
+	// mapClass("Bitmap");
+	// mapClass("Sprite");
+	// mapClass("Frame");
+	// mapClass("MovieClip");
+	// mapClass("Stage");
+	// mapClass("Text");
+	// mapClass("Button");
+	
+	
+	// using checkList Array to manage components simply, 
+	// but it can't used simply if components don't use the same host;
 	
 	//base function
 	checkList.push('trace');
