@@ -31,10 +31,16 @@
 
 (function()
 {	
-	var conflictMap = {}, cacheMap = {};	
+	var conflictMap = {}, 
+		cacheMap = {},
+		checkList = [];	
+	
 	function mapClass(className, host)
 	{
+		//if window.trace is defined ,save it to conflictMap;
 		if(window[className] != undefined) conflictMap[className] = window[className];
+		
+		//window.trace = casual.trace, and add it to cacheMap;
 		cacheMap[className] = window[className] = (host || casual)[className];
 	}
 		
@@ -47,29 +53,32 @@
 		}
 	}
 	
-	mapClass("trace");
+	//base function
+	checkList.push('trace');
 	
-	mapClass("EventBase");
-	mapClass("StageEvent");
-	mapClass("EventDispatcher");
+	//event class;
+	checkList.push('EventBase','StageEvent','EventDispatcher');
 	
-	mapClass("Matrix");
-	mapClass("Point");
-	mapClass("Rectangle");
+	//geom class;
+	checkList.push('Matrix','Point','Rectangle');
 	
-	//mapClass("Astar");
-	mapClass("NameUtil");
+	//utils class;
+	checkList.push('Astar','NameUtil','Color');
 	
-	mapClass("DisplayObject");
-	mapClass("DisplayObjectContainer");
-	mapClass("Graphics");
-	mapClass("Shape");
-	mapClass("Bitmap");
-	mapClass("Sprite");
-	mapClass("Frame");
-	mapClass("MovieClip");
-	mapClass("Stage");
-	mapClass("Text");
-	mapClass("Button");
-	
+	//display class;
+	checkList.push( 'DisplayObject', 
+					'DisplayObjectContainer', 
+					'Graphics', 
+					'Shape', 
+					'Bitmap',
+					'Sprite',
+					'Frame',
+					'MovieClip',
+					'Stage',
+					'Text',
+					'Button'
+				);
+	checkList.forEach(function(ele){
+		mapClass(ele);
+	});
 })();
