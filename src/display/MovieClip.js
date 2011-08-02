@@ -127,7 +127,7 @@ MovieClip.prototype.removeFrame = function(frameNumberOrLabel)
 /**
  * Remove All Frame
  */
-MoveClip.prototype.removeAllFrames = function()
+MovieClip.prototype.removeAllFrames = function()
 {
 	var _this = this;
 	this._frames.forEach(function( ele, index){
