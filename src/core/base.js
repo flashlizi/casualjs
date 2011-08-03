@@ -48,13 +48,44 @@ casual.trace = function()
 /**
  * Inheritance implementation for Javascript.
  */
-casual.inherit = function(childClass, parentClass) 
+casual.inherit = function(childClass, parentClass, newProperties) 
 {
-	var tempConstructor = function() {};
-  	tempConstructor.prototype = parentClass.prototype;
-  	childClass.superClass = parentClass.prototype;
-  	childClass.prototype = new tempConstructor();
+	var ctor = function() {},
+		child;
+	
+	ctor.prototype = parentClass.prototype;
+	// for old program
+  	
+  	childClass.prototype = new ctor();
   	childClass.prototype.constructor = childClass;
+  	childClass.superClass = parentClass.prototype;
+	
+	// new inherit method;
+	if (childClass && childClass.hasOwnProperty('constructor')) {
+      child = childClass.constructor;
+    } else {
+      child = function(){ return parentClass.apply(this, arguments); };
+    }
+
+	//copy parentClass static properties to child;
+	casual.extend(child , parentClass);
+	child.prototype = new ctor();
+	child.prototype.constructor = child;
+	child.superClass = parentClass.prototype;
+	
+	//copy childClass prototype  properties to child,
+	//this will add all parent prototype function to child.__proto__
+	casual.extend(child.prototype, childClass.prototype);
+	
+	//console.dir(childClass.prototype);
+	
+	//copy childClass static properties to child;
+	casual.extend(child, childClass);
+	
+	//copy newProperties static properties to child.prototype
+	casual.extend(child.prototype, newProperties);
+
+	return child;
 };
 
 /**
@@ -108,6 +139,18 @@ casual.copy = function(obj, targetClass, newProperties)
 	return o;
 };
 
+/**
+ *  Extend a given object with all the properties in passed-in object(s).
+ *  from underscore.js
+ */
+casual.extend = function(obj){
+	var args = Array.prototype.slice.call(arguments, 1);
+	args.forEach(function(source) {
+      for (var prop in source) obj[prop] = source[prop];
+    });
+    
+	return obj;
+}
 /**
  * Make a new object which is the same type as the parameter obj.
  */

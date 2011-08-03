@@ -55,7 +55,7 @@ MovieClip.prototype.addFrame = function(data)
 {
 	if(data[0] instanceof casual.Frame || data[0] instanceof Array) for(var i in data) this.addFrame(data[i]);
 	else this.setFrame(this._frames.length + 1, data);
-        return this;
+    return this;
 }
 
 /**

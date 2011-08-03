@@ -46,6 +46,7 @@ NameUtil.getUID = function()
  */
 NameUtil.createUniqueName = function(name)
 {
+	
 	//if end with a digit, then append an underscore before appending
 	var charCode = name.charCodeAt(name.length - 1);
     if (charCode >= 48 && charCode <= 57) name += "_";
