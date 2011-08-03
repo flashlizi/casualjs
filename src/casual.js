@@ -31,10 +31,16 @@
 
 (function()
 {	
-	var conflictMap = {}, cacheMap = {};	
+	var conflictMap = {}, 
+		cacheMap = {},
+		checkList = [];	
+	
 	function mapClass(className, host)
 	{
+		//if window.trace is defined ,save it to conflictMap;
 		if(window[className] != undefined) conflictMap[className] = window[className];
+		
+		//window.trace = casual.trace, and add it to cacheMap;
 		cacheMap[className] = window[className] = (host || casual)[className];
 	}
 		
@@ -46,30 +52,62 @@
 			else delete window[p];
 		}
 	}
+	/** this section is good if using host ;**/
+	// mapClass("trace");
+	// 
+	// mapClass("EventBase");
+	// mapClass("StageEvent");
+	// mapClass("EventDispatcher");
+	// 
+	// mapClass("Matrix");
+	// mapClass("Point");
+	// mapClass("Rectangle");
+	// 
+	// //mapClass("Astar");
+	// mapClass("NameUtil");
+	// 
+	// mapClass("DisplayObject");
+	// mapClass("DisplayObjectContainer");
+	// mapClass("Graphics");
+	// mapClass("Shape");
+	// mapClass("Bitmap");
+	// mapClass("Sprite");
+	// mapClass("Frame");
+	// mapClass("MovieClip");
+	// mapClass("Stage");
+	// mapClass("Text");
+	// mapClass("Button");
 	
-	mapClass("trace");
 	
-	mapClass("EventBase");
-	mapClass("StageEvent");
-	mapClass("EventDispatcher");
+	// using checkList Array to manage components simply, 
+	// but it can't used simply if components don't use the same host;
 	
-	mapClass("Matrix");
-	mapClass("Point");
-	mapClass("Rectangle");
+	//base function
+	checkList.push('trace');
 	
-	//mapClass("Astar");
-	mapClass("NameUtil");
+	//event class;
+	checkList.push('EventBase','StageEvent','EventDispatcher');
 	
-	mapClass("DisplayObject");
-	mapClass("DisplayObjectContainer");
-	mapClass("Graphics");
-	mapClass("Shape");
-	mapClass("Bitmap");
-	mapClass("Sprite");
-	mapClass("Frame");
-	mapClass("MovieClip");
-	mapClass("Stage");
-	mapClass("Text");
-	mapClass("Button");
+	//geom class;
+	checkList.push('Matrix','Point','Rectangle');
 	
+	//utils class;
+	checkList.push('Astar','NameUtil','Color');
+	
+	//display class;
+	checkList.push( 'DisplayObject', 
+					'DisplayObjectContainer', 
+					'Graphics', 
+					'Shape', 
+					'Bitmap',
+					'Sprite',
+					'Frame',
+					'MovieClip',
+					'Stage',
+					'Text',
+					'Button'
+				);
+	checkList.forEach(function(ele){
+		mapClass(ele);
+	});
 })();
