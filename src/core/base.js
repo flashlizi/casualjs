@@ -2,6 +2,7 @@
  * CasualJS Framework by Flashlizi, Copyright (c) 2011 RIAidea.com
  * Project Homepage: www.html5idea.com and http://code.google.com/p/casualjs/
  * 
+ * DATE : @DATE 
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
  * files (the "Software"), to deal in the Software without
@@ -31,7 +32,7 @@
  */
 var casual = 
 {
-	version: "0.1.2"
+	version: "@VERSION"
 };
 
 /**
