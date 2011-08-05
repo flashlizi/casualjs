@@ -50,7 +50,8 @@ ${CJ}: ${MODULES} | ${DIST_DIR}
 			sed 's/@DATE/'"${DATE}"'/' | \
 			${VER} >  ${CJ};
 				
-
+init: clean ${DIST_DIR}
+	@@echo "Init Over \n"
 clean:
 	@@echo "Removing Distribution directory:" ${DIST_DIR}
 	@@rm -rf ${DIST_DIR}
