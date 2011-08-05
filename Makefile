@@ -35,7 +35,7 @@ CJ_VER = $(shell cat VERSION)
 VER = sed "s/@VERSION/${CJ_VER}/"
 DATE=$(shell git log -1 --pretty=format:%ad)
 
-all: clean core
+all: init core
 
 core: casualjs
 		@@echo "Casualjs build complete"
@@ -50,9 +50,10 @@ ${CJ}: ${MODULES} | ${DIST_DIR}
 		@@cat ${MODULES} | \
 			sed 's/@DATE/'"${DATE}"'/' | \
 			${VER} >  ${CJ};
-				
+
 init: clean ${DIST_DIR}
-	@@echo "Init Over \n"
+		@@echo "Init Over \n"
+
 clean:
 	@@echo "Removing Distribution directory:" ${DIST_DIR}
 	@@rm -rf ${DIST_DIR}
