@@ -5,7 +5,7 @@ DIST_DIR = ${PREFIX}/dist
 NODE ?= `which node nodejs`
 
 BASE_FILES = ${SRC_DIR}/core/base.js\
-		${SRC_DIR}/geom/Matrix.js \
+		${SRC_DIR}/geom/Matrix.js\
 		${SRC_DIR}/geom/Rectangle.js\
 		${SRC_DIR}/utils/NameUtil.js\
 		${SRC_DIR}/event/EventBase.js\
