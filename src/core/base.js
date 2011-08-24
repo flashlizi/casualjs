@@ -31,7 +31,7 @@
  */
 var casual = 
 {
-	version: "0.1.2"
+	version: "0.1.3"
 };
 
 /**
@@ -117,3 +117,31 @@ casual.clone = function(obj)
 	return new casual.__cloneFunc();
 };
 casual.__cloneFunc = function() {};
+
+/**
+ * A helper function for getting dom element by id.
+ */
+casual.getDOM = function(id)
+{
+	return document.getElementById(id);
+};
+
+/**
+ * A helper function for creating a specific type of dom element with properties.
+ */
+casual.createDOM = function(type, props)
+{
+	var dom = document.createElement(type);
+	for(var p in props) 
+	{
+		var val = props[p];
+		if(p == "style")
+		{
+			for(var s in val) dom.style[s] = val[s];
+		}else
+		{
+			dom[p] = val;
+		}
+	}
+	return dom;
+};

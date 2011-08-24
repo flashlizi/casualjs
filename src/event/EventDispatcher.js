@@ -30,15 +30,14 @@
  * @name EventDispatcher
  * @class The EventDispatcher class is the base class for all classes that dispatch events. It is the base class for the DisplayObject class.
  */
-var EventDispatcher = function(){ };
-casual.EventDispatcher = EventDispatcher;
+var EventDispatcher = casual.EventDispatcher = function(){ };
 
 /**
  * Registers an event listener with an EventDispatcher object so that the listener receives notification of an event.
  */
 EventDispatcher.prototype.addEventListener = function(type, listener)
 {
-	casual.EventManager.addEventListener(this, type, listener);
+	return casual.EventManager.addEventListener(this, type, listener);
 }
 
 /**
@@ -46,15 +45,8 @@ EventDispatcher.prototype.addEventListener = function(type, listener)
  */
 EventDispatcher.prototype.removeEventListener = function(type, listener)
 {
-	casual.EventManager.removeEventListener(this, type, listener);
-}
-
-/**
- * Removes a listener with specific event type from the EventDispatcher object.
- */
-EventDispatcher.prototype.removeEventListenerByType = function(type)
-{
-	casual.EventManager.removeEventListenerByType(this, type);
+	if(listener) return casual.EventManager.removeEventListener(this, type, listener);
+	return casual.EventManager.removeEventListenerByType(this, type);
 }
 
 /**
@@ -62,7 +54,7 @@ EventDispatcher.prototype.removeEventListenerByType = function(type)
  */
 EventDispatcher.prototype.removeAllEventListeners = function()
 {
-	casual.EventManager.removeAllEventListeners(this);
+	return casual.EventManager.removeAllEventListeners(this);
 }
 
 /**
@@ -70,7 +62,7 @@ EventDispatcher.prototype.removeAllEventListeners = function()
  */
 EventDispatcher.prototype.dispatchEvent = function(event)
 {
-	casual.EventManager.dispatchEvent(this, event);
+	return casual.EventManager.dispatchEvent(this, event);
 }
 
 /**

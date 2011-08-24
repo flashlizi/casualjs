@@ -26,133 +26,90 @@
 
 (function(){
 /**
- * An abstracted event interface
+ * Manage all events within framework
  * @name EventManager
  * @class
  * @private
  */
-var EventManager = function() {};
-casual.EventManager = EventManager;
-
-EventManager._maps = {};
-EventManager._sources = {};
-EventManager._listeners = {};
-EventManager._counter = 1;
+var EventManager = casual.EventManager =
+{
+	_maps: [] //[{src:srcObj, type1:[listener1, listener2], type2:[listener3, listener4]}]
+};
 
 EventManager.addEventListener = function(src, type, listener)
 {	
-    var map = EventManager._maps[type];
-    if(map == undefined) map = EventManager._maps[type] = {};
-   	
-   	//get src or save it
-   	var srcid = EventManager._sources[src];
-   	if(srcid == undefined) srcid = EventManager._sources[src] = EventManager._counter++;   	
-   	
-   	if(map[srcid] == undefined) map[srcid] = {};
-   	map = map[srcid];
-   	
-   	//get listener or save it
-   	var lid = EventManager._listeners[listener];
-   	if(lid == undefined) lid = EventManager._listeners[listener] = EventManager._counter++;
-   	
-   	if(!(lid in map))
-   	{
-   		map = map[lid] = {};
-   		map.type = type;
-   		map.src = srcid;
-   		map.listener = listener;
-   		return true;
-   	}
-   	return false;
+    var map = getMap(this._maps, src, true);    
+    var listeners = getListeners(map.map, type, true);
+    if(listeners.indexOf(listener) == -1)
+    {
+    	listeners.push(listener);
+    	return true;
+    }
+    return false;
 };
 
 EventManager.removeEventListener = function(src, type, listener)
 {
-	//get event map by source
-	var map = EventManager._maps[type];
-	if(map == undefined) return false;	
-	var srcid = EventManager._sources[src];
-	if(srcid == undefined) return false;	
-	map = map[srcid];
-	if(map == undefined) return false;
-	
-	var empty = true;
-	for(var id in map)
+	var map = getMap(this._maps, src, false);
+	if(map == null) return false;
+    var listeners = getListeners(map.map, type, false);
+	if(listeners == null) return false;
+
+	for(var i = 0; i < listeners.length; i++)
 	{
-		var obj = map[id];
-		var lid = EventManager._listeners[listener];
-		if(lid == id)
+		var li = listeners[i];
+		if(li === listener)
 		{
-			delete EventManager._listeners[listener];
-			delete map[id];
-		}else
-		{
-			empty = false;
+			listeners.splice(i, 1);
+			if(listeners.length == 0) 
+			{
+				delete map.map[type];
+				releaseMap(this._maps, map);
+			}
+			return true;
 		}
 	}
-	
-	//TODO: bug?
-	if(empty)
-	{
-		delete EventManager._maps[type][srcid];
-		delete EventManager._sources[src];
-	}
-	
-	return true;
+	return false;
 };
 
 EventManager.removeEventListenerByType = function(src, type)
 {
-	//get event map by source
-	var map = EventManager._maps[type];
-	if(map == undefined) return false;	
-	var srcid = EventManager._sources[src];
-	if(srcid == undefined) return false;	
-	
-	if(map != undefined) delete map[srcid];
-	
-	//delete type mapping if its empty
-	var empty = true;
-	for(var key in map) 
+	var map = getMap(this._maps, src, false);
+    if(map && map.map.hasOwnProperty(type))
 	{
-		empty = false;
-		break;
+		delete map.map[type];
+		releaseMap(this._maps, map);
+		return true;
 	}
-	if(empty) delete EventManager._maps[type];
-	
-	return true;
-	
+	return false;
 };
 
 EventManager.removeAllEventListeners = function(src)
 {	
-	var srcid = EventManager._sources[src];
-	if(srcid == undefined) return false;
-	for(var type in EventManager._maps)
+	for(var i = 0; i <this._maps.length; i++)
 	{
-		var map = EventManager._maps[type];
-		if(map[scrid] != undefined) delete map[scrid];
+		var map = this._maps[i];
+		if(map.src === src)
+		{
+			this._maps.splice(i, 1);
+			return true;
+		}
 	}
-	delete EventManager._sources[src];
+	return false;
 };
 
 EventManager.dispatchEvent = function(src, event)
 {
-	//get event map by source
-	var map = EventManager._maps[event.type];
-	if(map == undefined) return false;	
-	var srcid = EventManager._sources[src];
-	if(srcid == undefined) return false;	
-	map = map[srcid];
-	if(map == undefined) return false;
+	var map = getMap(this._maps, src, false);
+	if(map == null) return false;
+	var listeners = getListeners(map.map, event.type, false);
+	if(listeners == null) return false;
 	
-	//pass source as event.target if it's not set
 	if(!event.target) event.target = src;
-	
-	for(var id in map)
+
+	for(var i = 0; i < listeners.length; i++)
 	{
-		var obj = map[id];
-		var listener = obj.listener;
+		var listener = listeners[i];
 		if(typeof(listener) == "function")
 		{
 			listener.call(src, event);
@@ -163,11 +120,51 @@ EventManager.dispatchEvent = function(src, event)
 
 EventManager.hasEventListener = function(src, type)
 {
-	var map = EventManager._maps[type];
-	if(map == undefined) return false;	
-	var srcid = EventManager._sources[src];
-	if(srcid == undefined) return false;
-	return map[srcid] != undefined;
+	var map = getMap(this._maps, src, false);
+	if(map == null) return false;
+	var listeners = getListeners(map.map, type, false);
+	return (listeners && listeners.length > 0);
 };
+
+function releaseMap(maps, map)
+{
+	var hasType = false;
+	for(var key in map.map)
+	{
+		if(key != "src")
+		{
+			hasType = true;
+			break;
+		}
+	}
+	if(!hasType)
+	{
+		maps.splice(map.index, 1);
+		return true;
+	}
+	return false;
+}
+
+function getMap(maps, src, autoCreate)
+{
+	for(var i = 0; i < maps.length; i++)
+	{
+		var map = maps[i];
+		if(map.src === src) return {map:map, index:i};
+	}
+	
+	if(autoCreate)
+	{
+		var map = {src:src};
+		maps.push(map);
+		return {map:map, index:maps.length-1};
+	}
+	return null;
+}
+
+function getListeners(map, type, autoCreate)
+{
+	return map.hasOwnProperty(type) ? map[type] : autoCreate ? (map[type] = []) : null;	
+}
 
 })();
