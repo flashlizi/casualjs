@@ -85,6 +85,7 @@ var Stage = function(context)
 		this.canvas.addEventListener("mousedown", casual.delegate(this.__mouseHandler, this), false);
 		this.canvas.addEventListener("mousemove", casual.delegate(this.__mouseHandler, this), false);
 		this.canvas.addEventListener("mouseup", casual.delegate(this.__mouseHandler, this), false);
+		this.canvas.addEventListener("click", casual.delegate(this.__mouseHandler, this), false);
 	}
 }
 casual.inherit(Stage, casual.DisplayObjectContainer);
