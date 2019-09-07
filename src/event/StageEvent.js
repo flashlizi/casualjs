@@ -56,6 +56,8 @@ StageEvent.MOUSE_MOVE = "mousemove";
 StageEvent.MOUSE_OVER = "mouseover";
 /** Defines the value of the type property of a mouseout event object. */
 StageEvent.MOUSE_OUT = "mouseout";
+/** Defines the value of the type property of a mouseout event object. */
+StageEvent.MOUSE_CLICK = "click";
 
 
 /**
